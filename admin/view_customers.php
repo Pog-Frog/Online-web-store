@@ -13,8 +13,8 @@
     <?php
         include("../includes/db.php");
         include("../includes/customer.php");
-        $cus_q = mysqli_query($con, "select * from customers");
-        while($row_cus = mysqli_fetch_array($cus_q)){
+        $cus_q = sqlsrv_query($con, "select * from customers");
+        while($row_cus = sqlsrv_fetch_array($cus_q)){
             $customer = new Customer((int)$row_cus['customer_id']);
     ?>
         <tr align="center">

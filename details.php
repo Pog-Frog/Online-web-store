@@ -128,20 +128,20 @@
                     if(isset($_GET['pro_id'])){
                         $product_id = $_GET['pro_id'];
                         $get_pro = "select * from products where product_id='$product_id'";
-                        $run_pro = mysqli_query($con, $get_pro);
-                        while($row_pro = mysqli_fetch_array($run_pro)){
+                        $run_pro = sqlsrv_query($con, $get_pro);
+                        while($row_pro = sqlsrv_fetch_array($run_pro)){
                             $pro_id = $row_pro['product_id'];
                             $pro_category = $row_pro['product_category'];
                             $pro_brand = $row_pro['product_brand'];
                             $pro_title = $row_pro['product_title'];
                             $pro_price = $row_pro['product_price'];
-                            $pro_description = $row_pro['product_describtion'];
+                            $pro_description = $row_pro['product_description'];
                             $pro_image = $row_pro['product_image'];
                             $pro_keywords = $row_pro['product_keywords'];
                             $pro_quantity = $row_pro['product_quantity'];
-                            $get_brand = "select * from brand where brand_id='$pro_brand'";
-                            $run_brand = mysqli_query($con, $get_brand);
-                            $row_brand = mysqli_fetch_array($run_brand);
+                            $get_brand = "select * from brands where brand_id='$pro_brand'";
+                            $run_brand = sqlsrv_query($con, $get_brand);
+                            $row_brand = sqlsrv_fetch_array($run_brand);
                             $brand_name = $row_brand['brand_title'];
                             echo "
                                 <div id='single_product'>

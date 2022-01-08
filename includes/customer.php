@@ -25,8 +25,8 @@ include("address.php");
             global $con;
             if(gettype($arg) == "integer"){
                 $this->customer_id = $arg;
-                $q_run = mysqli_query($con, "select * from customers where customer_id='$arg'");
-                $q = mysqli_fetch_array($q_run);
+                $q_run = sqlsrv_query($con, "select * from customers where customer_id='$arg'");
+                $q = sqlsrv_fetch_array($q_run);
                 $this->customer_address = new Address($q['customer_country'], $q['customer_city'], $q['customer_street']);
                 $this->customer_ip = $q['customer_ip'];
                 $this->customer_name = $q['customer_name'];
@@ -42,8 +42,8 @@ include("address.php");
             }
             elseif(gettype($arg) == "string"){
                 $this->customer_email = $arg;
-                $q_run = mysqli_query($con, "select * from customers where customer_email='$arg'");
-                $q = mysqli_fetch_array($q_run);
+                $q_run = sqlsrv_query($con, "select * from customers where customer_email='$arg'");
+                $q = sqlsrv_fetch_array($q_run);
                 $this->customer_address = new Address($q['customer_country'], $q['customer_city'], $q['customer_street']);
                 $this->customer_ip = $q['customer_ip'];
                 $this->customer_name = $q['customer_name'];
@@ -62,8 +62,8 @@ include("address.php");
             global $con;
             $this->customer_email = $email;
             $this->customer_password = $pass;
-            $q_run = mysqli_query($con, "select * from customers where customer_email='$email' and customer_password='$pass'");
-            $q = mysqli_fetch_array($q_run);
+            $q_run = sqlsrv_query($con, "select * from customers where customer_email='$email' and customer_password='$pass'");
+            $q = sqlsrv_fetch_array($q_run);
             $this->customer_address = new Address($q['customer_country'], $q['customer_city'], $q['customer_street']);
             $this->customer_ip = $q['customer_ip'];
             $this->customer_name = $q['customer_name'];
@@ -79,9 +79,9 @@ include("address.php");
         public function delete(){
             global $con;
             $id = $this->get_id();
-            $q_1 = mysqli_query($con, "delete from orders where customer_id='$id'");
-            $q_2 = mysqli_query($con, "delete from favorites where customer_id='$id'");
-            $q = mysqli_query($con, "delete from customers where customer_id='$id'");
+            $q_1 = sqlsrv_query($con, "delete from orders where customer_id='$id'");
+            $q_2 = sqlsrv_query($con, "delete from favorites where customer_id='$id'");
+            $q = sqlsrv_query($con, "delete from customers where customer_id='$id'");
             if($q && $q_1 && $q_2){
                 echo "<script>alert('Done!')</script>";
                 echo "<script>window.open('index.php?view_customers','_self')</script>";
@@ -146,7 +146,11 @@ include("address.php");
             $this->customer_image = $image;
         }
         public function get_membership(){
-            return $this->customer_membership;
+            global $con;
+            $mem_id = $this->customer_membership;
+            $q = sqlsrv_query($con , "select * from memberships where membership_id='$mem_id'");
+            $row_q = sqlsrv_fetch_array($q);
+            return $row_q['membership_title'];
         }
         public function set_membership($mem){
             $this->customer_membership = $mem;

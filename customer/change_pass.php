@@ -1,7 +1,7 @@
 <?php 
     $c = $_SESSION['customer_email'];
-    $c_q = mysqli_query($con, "select * from customers where customer_email='$c'"); 
-    $c_info = mysqli_fetch_array($c_q);
+    $c_q = sqlsrv_query($con, "select * from customers where customer_email='$c'"); 
+    $c_info = sqlsrv_fetch_array($c_q);
     $c_pass = $c_info['customer_password'];
     $c_ques = $c_info['recovery_question'];
     $c_ans = $c_info['recovery_answer'];
@@ -45,7 +45,7 @@
         }
         else{
             $update_customer = "update customers set customer_password='$customer_password',recovery_question='$recovery_question',recovery_answer='$recovery_answer' where customer_id='$c_id'";
-            $update_cus = mysqli_query($con, $update_customer);
+            $update_cus = sqlsrv_query($con, $update_customer);
             if($update_cus){
                 echo"<script>alert('YOUR ACCOUNT HAS BEEN UPDATE SUCCESSFULLY')</script>";
                 echo"<script>window.open('my_account.php','_self')</script>";

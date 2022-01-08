@@ -1,6 +1,11 @@
 <?php
-    $con = mysqli_connect("localhost","root","","onlinestore");
-    if(mysqli_connect_errno()){
-        echo "Failed to connect to MySql Database".mysqli_connect_error();
+    $servername = "ELGOBLINO";
+    $conn = array("Database"=>"online_store", "UID"=>"omara", "PWD"=>"wildjungle");
+    $con = sqlsrv_connect($servername , $conn);
+    if ($con){
+        
+    }
+    else{
+        echo"Failed to connect to sql sever";
     }
 ?>
