@@ -27,8 +27,8 @@
                         <option><?php echo $product->get_category()->get_title()?></option>
                         <?php
                             $get_cats = "select * from categories";
-                            $run_cats = mysqli_query($con, $get_cats);
-                            while($row_cats = mysqli_fetch_array($run_cats)){
+                            $run_cats = sqlsrv_query($con, $get_cats);
+                            while($row_cats = sqlsrv_fetch_array($run_cats)){
                                 $category = new Category($row_cats['category_id']);
                                 $cat_id = $category->get_id();
                                 $cat_title = $category->get_title();
@@ -48,9 +48,9 @@
                     <select name="product_brand" required>
                     <option>Select a Brand</option>
                     <?php
-                        $get_brands = "select * from brand";
-                        $run_brands = mysqli_query($con, $get_brands);
-                        while($row_brands = mysqli_fetch_array($run_brands)){
+                        $get_brands = "select * from brands";
+                        $run_brands = sqlsrv_query($con, $get_brands);
+                        while($row_brands = sqlsrv_fetch_array($run_brands)){
                             $brand = new Brand($row_brands['brand_id']);
                             $brand_id = $brand->get_id();
                             $brand_title = $brand->get_title();

@@ -7,12 +7,12 @@
 <?php
     if(isset($_POST['yes'])){
         $c = $_SESSION['customer_email'];
-        $c_q = mysqli_query($con, "select * from customers where customer_email='$c'"); 
+        $c_q = sqlsrv_query($con, "select * from customers where customer_email='$c'"); 
         $c_info = mysqli_fetch_array($c_q);
         $id = $c_info['customer_id'];
-        $delete_c = mysqli_query($con, "delete from customers where customer_email='$c'");
-        $delete_c = mysqli_query($con, "delete from favorites where customer_id='$id'");
-        $delete_c = mysqli_query($con, "delete from customers where customer_id='$id'");
+        $delete_c = sqlsrv_query($con, "delete from customers where customer_email='$c'");
+        $delete_c = sqlsrv_query($con, "delete from favorites where customer_id='$id'");
+        $delete_c = sqlsrv_query($con, "delete from customers where customer_id='$id'");
         echo"<script>alert('Account deleted successfully... redirecting to main page')</script>";
         echo"<script>window.open('../logout.php','_self')</script>";
     }

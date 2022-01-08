@@ -21,13 +21,13 @@ include("brand.php");
         public function __construct1($id){
             global $con;
             $this->pro_id = $id;
-            $q = mysqli_query($con, "select * from products where product_id='$id'");
-            $q_run = mysqli_fetch_array($q);
+            $q = sqlsrv_query($con, "select * from products where product_id='$id'");
+            $q_run = sqlsrv_fetch_array($q);
             $this->category = new Category($q_run['product_category']);
             $this->brand = new Brand($q_run['product_brand']);
             $this->pro_title = $q_run['product_title'];
             $this->pro_price = $q_run['product_price'];
-            $this->pro_describtion = $q_run['product_describtion'];
+            $this->pro_describtion = $q_run['product_description'];
             $this->pro_image = $q_run['product_image'];
             $this->pro_keywords = $q_run['product_keywords'];
             $this->pro_quantity = $q_run['product_quantity'];
@@ -42,8 +42,8 @@ include("brand.php");
             $product_describtion = $this->get_describtion();
             $product_keywords = $this->get_keywords();
             $product_quantity = $this->get_quantity();
-            $insert_product = "insert into products (product_category,product_brand,product_title,product_price,product_describtion,product_image,product_keywords,product_quantity) values ('$product_category','$product_brand','$product_title','$product_price','$product_describtion','$product_image','$product_keywords','$product_quantity')";
-            $insert_pro = mysqli_query($con, $insert_product);
+            $insert_product = "insert into products (product_category,product_brand,product_title,product_price,product_description,product_image,product_keywords,product_quantity) values ('$product_category','$product_brand','$product_title','$product_price','$product_describtion','$product_image','$product_keywords','$product_quantity')";
+            $insert_pro = sqlsrv_query($con, $insert_product);
             if($insert_pro){
                 echo "<script>alert('Product has been inserted !')</script>";
                 echo "<script>window.open('index.php?insert_product','_self')</script>";
@@ -60,8 +60,8 @@ include("brand.php");
             $product_describtion = $this->get_describtion();
             $product_keywords = $this->get_keywords();
             $product_quantity = $this->get_quantity();
-            $update = "update products set product_category='$product_category',product_brand='$product_brand',product_title='$product_title',product_image='$product_image',product_price='$product_price',product_describtion='$product_describtion',product_keywords='$product_keywords',product_quantity='$product_quantity' where product_id='$pro_id'";
-            $update_pro = mysqli_query($con, $update);
+            $update = "update products set product_category='$product_category',product_brand='$product_brand',product_title='$product_title',product_image='$product_image',product_price='$product_price',product_description='$product_describtion',product_keywords='$product_keywords',product_quantity='$product_quantity' where product_id='$pro_id'";
+            $update_pro = sqlsrv_query($con, $update);
             if($update_pro){
                 echo "<script>alert('Product has been updated !')</script>";
                 echo "<script>window.open('index.php?view_products','_self')</script>";
@@ -71,7 +71,7 @@ include("brand.php");
             global $con;
             $pro_id = $this->get_id();
             $delete = "delete from products where product_id='$pro_id'";
-            $delete_pro = mysqli_query($con, $delete);
+            $delete_pro = sqlsrv_query($con, $delete);
             if($delete_pro){
                 echo "<script>alert('The product has been deleted !')</script>";
                 echo "<script>window.open('index.php?view_products','_self')</script>";

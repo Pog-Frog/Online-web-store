@@ -209,17 +209,19 @@
         $customer_contact = $_POST['customer_contact'];
         $customer_membership = $_POST['customer_membership'];
         $account_status = "true";
-        $check_customer = mysqli_query($con, "select * from customers where customer_email='$customer_email'");
-        if(mysqli_num_rows($check_customer) > 0){
+        $check_customer = sqlsrv_query($con, "select * from customers where customer_email='$customer_email'", array(), array( "Scrollable" => 'static' ));
+        if(sqlsrv_num_rows($check_customer) > 0){
             echo"<script>alert('Error this email is already in use')</script>";
         }
         else{
             move_uploaded_file($customer_image_tmp, "customer/customer_profile_pics/$customer_image");
-            $insert_customer = "insert into customers (customer_ip,customer_name,customer_email,customer_password,recovery_question,recovery_answer,customer_image,customer_country,customer_city,customer_street,customer_contact,customer_membership,account_status) values ('$ip','$customer_name','$customer_email','$customer_password','$recovery_question','$recovery_answer','$customer_image','$customer_country','$customer_city','$customer_street','$customer_contact','$customer_membership','$account_status')";
-            $insert_cus = mysqli_query($con, $insert_customer);
-            $customer_cart = mysqli_query($con , "select * from cart where ip_address='$ip'");
-            $check_cart = mysqli_num_rows($customer_cart);
-            if($check_cart == 0){
+            $q_mem = sqlsrv_query($con, "select membership_id from memberships where membership_title='$customer_membership'");
+            $row_mem = sqlsrv_fetch_array($q_mem);
+            $cus_mem = $row_mem['membership_id'];
+            $insert_customer = "insert into customers (customer_ip,customer_name,customer_email,customer_password,recovery_question,recovery_answer,customer_image,customer_country,customer_city,customer_street,customer_contact,customer_membership,account_status) values ('$ip','$customer_name','$customer_email','$customer_password','$recovery_question','$recovery_answer','$customer_image','$customer_country','$customer_city','$customer_street','$customer_contact','$cus_mem','$account_status')";
+            $insert_cus = sqlsrv_query($con, $insert_customer);
+            $customer_cart = sqlsrv_query($con , "select * from cart where  AND customer_email='$customer_email'", array(), array( "Scrollable" => 'static' ));
+            if(sqlsrv_num_rows($customer_cart) == 0){
                 $_SESSION['customer_email'] = $customer_email;
                 $_SESSION['customer_name'] = $customer_name;
                 echo "<script>alert('Account Created Successfully !!')</script>";

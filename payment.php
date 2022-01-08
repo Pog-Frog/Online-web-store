@@ -15,8 +15,8 @@
             <tr>
                 <?php 
                     $tmp_email = $customer->get_email();
-                    $run_item = mysqli_query($con, "select * from cart where customer_email='$tmp_email'");
-                    while($cart_product = mysqli_fetch_array($run_item)){
+                    $run_item = sqlsrv_query($con, "select * from cart where customer_email='$tmp_email'");
+                    while($cart_product = sqlsrv_fetch_array($run_item)){
                         $quantity = $cart_product['quantity'];
                         $product = new Product($cart_product['product_id'])?>
 
@@ -36,7 +36,7 @@
             </tr>
             <tr>
         </table>
-        <p style="background-color:white; width: 750px;">Total: <?php if($customer->get_membership() == "Normal"){total_price();} elseif($customer->get_membership() == "Gold"){echo"Total - 10% = ";((double)total_price())-((double)total_price()*0.1);} else{echo "Total - 15% = ";echo ((double)total_price())-((double)total_price()*0.15);}?>L.E</p>
+        <p style="background-color:white; width: 750px;">Total: <?php if($customer->get_membership() == "Normal"){echo total_price();} elseif($customer->get_membership() == 'Gold'){echo"Total - 10% = ";echo ((double)total_price())-((double)total_price()*0.1);} else{echo "Total - 15% = ";echo ((double)total_price())-((double)total_price()*0.15);}?>L.E</p>
     </form>
     <br>
     <form  method="post" enctype="multipart/form-data"">
@@ -79,21 +79,21 @@
                 $customer_id = $customer->get_id();
                 $date_added = date("Y/m/d");
                 $tmp_email = $customer->get_email();
-                $run_item = mysqli_query($con, "select * from cart where customer_email='$tmp_email'");
+                $run_item = sqlsrv_query($con, "select * from cart where customer_email='$tmp_email'");
                 if($_POST['address'] == 1){
                     if(isset($_POST['custom_street']) && isset($_POST['custom_street']) && !empty($_POST['custom_street']) && !empty($_POST['custom_street'])){
                         $country = $_POST['custom_country'];
                         $city = $_POST['custom_city'];
                         $street = $_POST['custom_street'];
-                        while($cart_product = mysqli_fetch_array($run_item)){
+                        while($cart_product = sqlsrv_fetch_array($run_item)){
                             $quantity = $cart_product['quantity'];
                             $product = new Product($cart_product['product_id']);
                             $product_id = $product->get_id();
                             $insert = "insert into orders (customer_id,product_id,product_quantity,date_added,custom_country,custom_city,custom_street) values ('$customer_id','$product_id','$quantity','$date_added','$country','$city','$street')";
-                            mysqli_query($con, $insert);
+                            sqlsrv_query($con, $insert);
                             $product->set_quantity($product->get_quantity() - $quantity);
                             $product->update();
-                            mysqli_query($con , "delete from cart where product_id='$product_id' AND customer_email='$tmp_email'");
+                            sqlsrv_query($con , "delete from cart where product_id='$product_id' AND customer_email='$tmp_email'");
                         }
                     }
                     else{
@@ -102,15 +102,15 @@
                     }
                 }
                 else{
-                    while($cart_product = mysqli_fetch_array($run_item)){
+                    while($cart_product = sqlsrv_fetch_array($run_item)){
                         $quantity = $cart_product['quantity'];
                         $product = new Product($cart_product['product_id']);
                         $product_id = $product->get_id();
                         $insert = "insert into orders (customer_id,product_id,product_quantity,date_added) values ('$customer_id','$product_id','$quantity','$date_added')";
-                        mysqli_query($con, $insert);
+                        sqlsrv_query($con, $insert);
                         $product->set_quantity($product->get_quantity() - $quantity);
                         $product->update();
-                        mysqli_query($con , "delete from cart where product_id='$product_id' AND customer_email='$tmp_email'");
+                        sqlsrv_query($con , "delete from cart where product_id='$product_id' AND customer_email='$tmp_email'");
                     }
                 }
                 echo "<script>alert('Thank you for purchasing our products')</script>";
