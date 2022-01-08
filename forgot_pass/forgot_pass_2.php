@@ -1,8 +1,8 @@
 <div style="margin-top: 100px; margin-left: 150px;">
     <?php 
         $customer_email = $_SESSION['tmp'];
-        $check_customer = sqlsrv_query($con, "select * from customers where customer_email='$customer_email'");
-        $customer_info = sqlsrv_fetch_array($check_customer);
+        $check_customer = mysqli_query($con, "select * from customers where customer_email='$customer_email'");
+        $customer_info = mysqli_fetch_array($check_customer);
         $customer_name = $customer_info['customer_name'];
         $recovery_question = $customer_info['recovery_question'];
         $recovery_answer = $customer_info['recovery_answer'];
@@ -25,8 +25,8 @@
                 $ans = $_POST['ans'];
                 if($recovery_answer == $ans){
                     $ip = getIp();
-                    $customer_cart = sqlsrv_query($con , "select * from cart where ip_address='$ip'", array(), array( "Scrollable" => 'static' ));
-                    $check_cart = sqlsrv_num_rows($customer_cart);
+                    $customer_cart = mysqli_query($con , "select * from cart where ip_address='$ip'");
+                    $check_cart = mysqli_num_rows($customer_cart);
                     if($check_customer > 0 AND $check_cart == 0){
                         $_SESSION['customer_email'] = $customer_email;
                         $_SESSION['customer_name'] = $customer_name;

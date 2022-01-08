@@ -17,9 +17,9 @@
     <?php
         include("../includes/db.php");
         include("../includes/product.php");
-        $pro_q = sqlsrv_query($con, "select * from products");
+        $pro_q = mysqli_query($con, "select * from products");
         $i = 0;
-        while($row_pro = sqlsrv_fetch_array($pro_q)){
+        while($row_pro = mysqli_fetch_array($pro_q)){
             $product = new Product($row_pro['product_id']);
             $i++;
     ?>

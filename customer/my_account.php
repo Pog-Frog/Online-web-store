@@ -86,8 +86,8 @@
                     <ul id="categories">
                         <?php 
                             $customer = $_SESSION['customer_email'];
-                            $customer_q = sqlsrv_query($con, "select * from customers where customer_email='$customer'"); 
-                            $customer_info = sqlsrv_fetch_array($customer_q);
+                            $customer_q = mysqli_query($con, "select * from customers where customer_email='$customer'"); 
+                            $customer_info = mysqli_fetch_array($customer_q);
                             $customer_name = $customer_info['customer_name'];
                             $customer_image = $customer_info['customer_image'];
                             echo"<p style='text-align: center;'><img src='customer_profile_pics/$customer_image' width='150' height='150'/>";

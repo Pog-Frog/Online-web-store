@@ -10,11 +10,11 @@
             $tmp = 0;
             $total = 0;
             $item_id = "select * from cart where ip_address='$ip'";
-            $run_item = sqlsrv_query($con, $item_id);
-            while($cart_product = sqlsrv_fetch_array($run_item)){
+            $run_item = mysqli_query($con, $item_id);
+            while($cart_product = mysqli_fetch_array($run_item)){
                 $pro_id = $cart_product['product_id'];
-                $tmp_pro = sqlsrv_query($con, "select * from products where product_id='$pro_id'");
-                while($pro = sqlsrv_fetch_array($tmp_pro)){
+                $tmp_pro = mysqli_query($con, "select * from products where product_id='$pro_id'");
+                while($pro = mysqli_fetch_array($tmp_pro)){
                     $tmp = $tmp + $pro['product_price'];
                     $product_price = $pro['product_price'];
                     $product_title = $pro['product_title'];

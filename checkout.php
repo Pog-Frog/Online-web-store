@@ -123,6 +123,7 @@
                         else{
                             $customer_email = $_SESSION['customer_email'];
                             $ip = getIp();
+                            $q = mysqli_query($con,"update cart set customer_email='$customer_email' where ip_address='$ip'");
                             $customer = new Customer($_SESSION['customer_email']);
                             if(empty($customer->get_adddress()->get_country())){
                                 echo "<script>alert('Please update your address before checkout')</script>";

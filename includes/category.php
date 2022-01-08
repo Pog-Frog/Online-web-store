@@ -11,18 +11,16 @@
         }
         function __construct1($id){
             $this->category_id = $id;
-            $servername = "ELGOBLINO";
-            $conn = array("Database"=>"online_store", "UID"=>"omara", "PWD"=>"wildjungle");
-            $con = sqlsrv_connect($servername , $conn);
-            $q = sqlsrv_query($con, "select * from categories where category_id='$id'");
-            $q_run = sqlsrv_fetch_array($q);
+            $con = mysqli_connect("localhost","root","","onlinestore");
+            $q = mysqli_query($con, "select * from categories where category_id='$id'");
+            $q_run = mysqli_fetch_array($q);
             $this->category_title = $q_run['category_title'];
         }
         public function insert(){
             global $con;
             $category_title = $this->get_title();
             $insert_category = "insert into categories (category_title) values ('$category_title')";
-            $insert_cat = sqlsrv_query($con, $insert_category);
+            $insert_cat = mysqli_query($con, $insert_category);
             if($insert_cat){
                 echo "<script>alert('Category has been inserted !')</script>";
                 echo "<script>window.open('index.php?insert_category','_self')</script>";
@@ -33,7 +31,7 @@
             $cat_id = $this->get_id();
             $category_title = $this->get_title();
             $update = "update categories set category_title='$category_title' where category_id='$cat_id'";
-            $update_cat = sqlsrv_query($con, $update);
+            $update_cat = mysqli_query($con, $update);
             if($update_cat){
                 echo "<script>alert('Category has been updated !')</script>";
                 echo "<script>window.open('index.php?view_categories','_self')</script>";
@@ -44,8 +42,8 @@
             $cat_id = $this->get_id();
             $delete = "delete from categories where category_id='$cat_id'";
             $delete_pro = "delete from products where product_category='$cat_id'";
-            $delete_pros = sqlsrv_query($con, $delete_pro);
-            $delete_cat = sqlsrv_query($con, $delete);
+            $delete_pros = mysqli_query($con, $delete_pro);
+            $delete_cat = mysqli_query($con, $delete);
             if($delete_cat and $delete_pros){
                 echo "<script>alert('The category and all its products have been deleted !')</script>";
                 echo "<script>window.open('index.php?view_categories','_self')</script>";

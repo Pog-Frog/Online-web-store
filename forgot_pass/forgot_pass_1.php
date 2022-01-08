@@ -21,15 +21,15 @@
                             if(isset($_POST['login'])){
                                 $customer_email = $_POST['email'];
                                 $_SESSION['tmp'] = $customer_email;
-                                $check_customer = sqlsrv_query($con, "select * from customers where customer_email='$customer_email'", array(), array( "Scrollable" => 'static' ));
-                                $customer_info = sqlsrv_fetch_array($check_customer);
+                                $check_customer = mysqli_query($con, "select * from customers where customer_email='$customer_email'");
+                                $customer_info = mysqli_fetch_array($check_customer);
                                 $customer_password = $customer_info['customer_password'];
                                 $customer_status = $customer_info['account_status'];
                                 if($customer_status == "false"){
                                     echo "<script>alert('Sorry Account Suspended')</script>";
                                 }
                                 else{
-                                    if(sqlsrv_num_rows($check_customer) == 0){
+                                    if(mysqli_num_rows($check_customer) == 0){
                                         echo "<script>alert('Email is incorrect')</script>";
                                         exit();
                                     }

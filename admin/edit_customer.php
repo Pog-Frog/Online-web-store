@@ -89,7 +89,7 @@
         $tmp = $_POST['account_status'];
         $tmp1 = $customer->get_id();
         $tmp2 = $_POST['report_user'];
-        $q = sqlsrv_query($con, "update customers set account_status='$tmp',report_status='$tmp2' where customer_id='$tmp1'");
+        $q = mysqli_query($con, "update customers set account_status='$tmp',report_status='$tmp2' where customer_id='$tmp1'");
         if($q){
             echo "<script>alert('Done!')</script>";
             echo "<script>window.open('index.php?view_customers','_self')</script>";

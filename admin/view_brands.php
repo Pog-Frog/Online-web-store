@@ -12,13 +12,13 @@
     <?php
         include("../includes/db.php");
         include("../includes/product.php");
-        $brand_q = sqlsrv_query($con, "select * from brands");
+        $brand_q = mysqli_query($con, "select * from brand");
         $i = 0;
-        while($row_brand = sqlsrv_fetch_array($brand_q)){
+        while($row_brand = mysqli_fetch_array($brand_q)){
             $brand_id = $row_brand['brand_id'];
             $pro_q = "select * from products where product_brand='$brand_id'";
-            $pro = sqlsrv_query($con, $pro_q, array(), array( "Scrollable" => 'static' ));
-            $no_pros = sqlsrv_num_rows($pro);
+            $pro = mysqli_query($con, $pro_q);
+            $no_pros = mysqli_num_rows($pro);
             $brand = new Brand($brand_id);
             $i++;
     ?>

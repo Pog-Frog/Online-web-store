@@ -12,13 +12,13 @@
     <?php
         include("../includes/db.php");
         include("../includes/product.php");
-        $cat_q = sqlsrv_query($con, "select * from categories");
+        $cat_q = mysqli_query($con, "select * from categories");
         $i = 0;
-        while($row_cat = sqlsrv_fetch_array($cat_q)){
+        while($row_cat = mysqli_fetch_array($cat_q)){
             $cat_id = $row_cat['category_id'];
             $pro_q = "select * from products where product_category='$cat_id'";
-            $pro = sqlsrv_query($con, $pro_q, array(), array( "Scrollable" => 'static' ));
-            $no_pros = sqlsrv_num_rows($pro);
+            $pro = mysqli_query($con, $pro_q);
+            $no_pros = mysqli_num_rows($pro);
             $category = new Category($cat_id);
             $i++;
     ?>

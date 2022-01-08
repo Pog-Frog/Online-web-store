@@ -1,9 +1,6 @@
 <?php 
     include("db.php");
-    include("supplier.php");
-
-    $supplier = new Supplier();
-    $supplier->set_name('this is a good sub');
-    $supplier->set_email('sub@gmail.com');
-    $supplier->set_number('12345679');
-    $supplier->insert();
+    include("product.php");
+    include("customer.php");
+    $q = new Customer(12);
+    echo $q->get_adddress()->get_city();

@@ -138,36 +138,33 @@
                                 $ip = getIp();
                                 $tmp = 0;
                                 $total = 0;
-                                if((isset($_SESSION['customer_email']))){
-                                    $customer_email = $_SESSION['customer_email'];
-                                    $item_id = "select * from cart where customer_email='$customer_email'";
-                                    $run_item = sqlsrv_query($con, $item_id);
-                                    while($cart_product = sqlsrv_fetch_array($run_item)){
-                                        $pro_id = $cart_product['product_id'];
-                                        $tmp_pro = sqlsrv_query($con, "select * from products where product_id='$pro_id'");
-                                        while($pro = sqlsrv_fetch_array($tmp_pro)){
-                                            $tmp = $tmp + $pro['product_price'];
-                                            $product_price = $pro['product_price'];
-                                            $product_title = $pro['product_title'];
-                                            $product_image = $pro['product_image'];
-                                            ?>
-                                            <tr align="center">
-                                                <td><input type="checkbox" name="remove[]" value="<?php echo $pro_id;?>"/></td>
-                                                <td>
-                                                    <?php echo $product_title?><br>
-                                                    <img src="admin/product_images/<?php echo $product_image;?>" width="60" height="60"/>
-                                                </td>
-                                                <td>
-                                                    <select name="qty[<?php echo $pro_id?>]">
-                                                        <?php
-                                                            getQuantity($pro_id);
-                                                        ?>
-                                                    </select>
-                                                </td>
-                                                <td><?php echo $product_price?></td>
-                                            </tr>
-                                        <?php }
-                                    }
+                                $item_id = "select * from cart where ip_address='$ip'";
+                                $run_item = mysqli_query($con, $item_id);
+                                while($cart_product = mysqli_fetch_array($run_item)){
+                                    $pro_id = $cart_product['product_id'];
+                                    $tmp_pro = mysqli_query($con, "select * from products where product_id='$pro_id'");
+                                    while($pro = mysqli_fetch_array($tmp_pro)){
+                                        $tmp = $tmp + $pro['product_price'];
+                                        $product_price = $pro['product_price'];
+                                        $product_title = $pro['product_title'];
+                                        $product_image = $pro['product_image'];
+                                        ?>
+                                        <tr align="center">
+                                            <td><input type="checkbox" name="remove[]" value="<?php echo $pro_id;?>"/></td>
+                                            <td>
+                                                <?php echo $product_title?><br>
+                                                <img src="admin/product_images/<?php echo $product_image;?>" width="60" height="60"/>
+                                            </td>
+                                            <td>
+                                                <select name="qty[<?php echo $pro_id?>]">
+                                                    <?php
+                                                        getQuantity($pro_id);
+                                                    ?>
+                                                </select>
+                                            </td>
+                                            <td><?php echo $product_price?></td>
+                                        </tr>
+                                    <?php }
                                 }
                             ?>
                             <tr align="right">
@@ -184,14 +181,13 @@
                     <?php 
                         global $con;
                         $ip = getIp();
-                        $customer_email = $_SESSION['customer_email'];
                         if(isset($_POST['update_cart'])){
                             foreach($_POST['qty'] as $pro_id => $qty){
-                                sqlsrv_query($con, "update cart SET quantity='$qty' where product_id='$pro_id' AND customer_email='$customer_email'");
+                                mysqli_query($con, "update cart SET quantity='$qty' where product_id='$pro_id' AND ip_address='$ip'");
                             }
                             foreach($_POST['remove'] as $remove_id){
-                                $delete_product = "delete from cart where product_id='$remove_id' AND customer_email='$customer_email'";
-                                sqlsrv_query($con, $delete_product);
+                                $delete_product = "delete from cart where product_id='$remove_id' AND ip_address='$ip'";
+                                mysqli_query($con, $delete_product);
                             }
                             echo "<script>window.open('cart.php','_self')</script>";
                         }

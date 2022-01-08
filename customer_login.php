@@ -37,57 +37,46 @@
         if(isset($_POST['login'])){
             $customer_email = $_POST['email'];
             $customer_password = $_POST['pass'];
-            $check_customer = sqlsrv_query($con, "select * from customers where customer_email='$customer_email' and customer_password='$customer_password'", array(), array( "Scrollable" => 'static' ));
-            if(sqlsrv_num_rows($check_customer) != 0){
-                $customer_info = sqlsrv_fetch_array($check_customer);
-                $customer_name = $customer_info['customer_name'];
-                $customer_status = $customer_info['account_status'];
-                $report_status = $customer_info['report_status'];
-                if($customer_status == "false"){
-                    echo "<script>alert('Sorry Account Suspended')</script>";
-                }
-                else{
-                    if(sqlsrv_num_rows($check_customer) == 0){
-                        echo "<script>alert('Password or Email is incorrect')</script>";
-                        exit();
-                    }
-                    $cus_q = "delete from cart where customer_email='$customer_email'";
-                    sqlsrv_query($con ,$cus_q );
-                    $ip = getIp();
-                    $cus_q = "update customers set customer_ip = '$ip' where customer_email = '$customer_email'";
-                    sqlsrv_query($con ,$cus_q );
-                    $get_cart = "select * from cart where customer_email='$customer_email'";
-                    $customer_cart = sqlsrv_query($con ,$get_cart , array(), array( "Scrollable" => 'static' ));
-                    $check_cart = sqlsrv_num_rows($customer_cart);
-                    if($check_customer > 0 AND $check_cart == 0){
-                        $_SESSION['customer_email'] = $customer_email;
-                        $_SESSION['customer_name'] = $customer_name;
-                        if($report_status == "true"){
-                            echo "<script>alert('Login Successfull BUT YOU HAVE BEEN REPSORTED BY THE ADMIN BAD BOY!!')</script>";
-                            echo "<script>window.open('customer/my_account.php','_self')</script>";
-                        }
-                        else{
-                            echo "<script>alert('Login Successfull !!')</script>";
-                            echo "<script>window.open('customer/my_account.php','_self')</script>";
-                        }
-                    }
-                    else{
-                        $_SESSION['customer_email'] = $customer_email;
-                        $_SESSION['customer_name'] = $customer_name;
-                        if($report_status == "true"){
-                            echo "<script>alert('Login Successfull BUT YOU HAVE BEEN REPORTED BY THE ADMIN BAD BOY!!')</script>";
-                            echo "<script>window.open('customer/my_account.php','_self')</script>";
-                        }
-                        else{
-                            echo "<script>alert('Login Successfull !!')</script>";
-                            echo "<script>window.open('checkout.php','_self')</script>";
-                        }
-                    }
-                }
+            $check_customer = mysqli_query($con, "select * from customers where customer_email='$customer_email' and customer_password='$customer_password'");
+            $customer_info = mysqli_fetch_array($check_customer);
+            $customer_name = $customer_info['customer_name'];
+            $customer_status = $customer_info['account_status'];
+            $report_status = $customer_info['report_status'];
+            if($customer_status == "false"){
+                echo "<script>alert('Sorry Account Suspended')</script>";
             }
             else{
-                echo "<script>alert('Password or Email is incorrect')</script>";
-                exit();
+                if(mysqli_num_rows($check_customer) == 0){
+                    echo "<script>alert('Password or Email is incorrect')</script>";
+                    exit();
+                }
+                $ip = getIp();
+                $customer_cart = mysqli_query($con , "select * from cart where ip_address='$ip'");
+                $check_cart = mysqli_num_rows($customer_cart);
+                if($check_customer > 0 AND $check_cart == 0){
+                    $_SESSION['customer_email'] = $customer_email;
+                    $_SESSION['customer_name'] = $customer_name;
+                    if($report_status == "true"){
+                        echo "<script>alert('Login Successfull BUT YOU HAVE BEEN REPSORTED BY THE ADMIN BAD BOY!!')</script>";
+                        echo "<script>window.open('customer/my_account.php','_self')</script>";
+                    }
+                    else{
+                        echo "<script>alert('Login Successfull !!')</script>";
+                        echo "<script>window.open('customer/my_account.php','_self')</script>";
+                    }
+                }
+                else{
+                    $_SESSION['customer_email'] = $customer_email;
+                    $_SESSION['customer_name'] = $customer_name;
+                    if($report_status == "true"){
+                        echo "<script>alert('Login Successfull BUT YOU HAVE BEEN REPSORTED BY THE ADMIN BAD BOY!!')</script>";
+                        echo "<script>window.open('customer/my_account.php','_self')</script>";
+                    }
+                    else{
+                        echo "<script>alert('Login Successfull !!')</script>";
+                        echo "<script>window.open('checkout.php','_self')</script>";
+                    }
+                }
             }
         }
     ?>

@@ -1,7 +1,7 @@
 <?php 
     $c = $_SESSION['customer_email'];
-    $c_q = sqlsrv_query($con, "select * from customers where customer_email='$c'"); 
-    $c_info = sqlsrv_fetch_array($c_q);
+    $c_q = mysqli_query($con, "select * from customers where customer_email='$c'"); 
+    $c_info = mysqli_fetch_array($c_q);
     $c_name = $c_info['customer_name'];
     $c_pass = $c_info['customer_password'];
     $c_image = $c_info['customer_image'];
@@ -82,7 +82,7 @@
         $customer_membership = $_POST['customer_membership'];
         move_uploaded_file($customer_image_tmp, "customer_profile_pics/$customer_image");
         $update_customer = "update customers set customer_name='$customer_name',customer_image='$customer_image',customer_country='$customer_country',customer_city='$customer_city',customer_street='$customer_street', customer_contact='$customer_contact', customer_membership='$customer_membership' where customer_id='$c_id'";
-        $update_cus = sqlsrv_query($con, $update_customer);
+        $update_cus = mysqli_query($con, $update_customer);
         if($update_cus){
             $_SESSION['customer_name'] = $customer_name;
             echo"<script>alert('YOUR ACCOUNT HAS BEEN UPDATE SUCCESSFULLY')</script>";

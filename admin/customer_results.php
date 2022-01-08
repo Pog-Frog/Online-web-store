@@ -114,9 +114,9 @@
                     elseif(isset($_GET['by_name']) && !empty($_GET['by_name'])){
                         $tmp = $_GET['by_name'];
                         global $con;
-                        $q = sqlsrv_query($con, "select * from customers where customer_name='$tmp'", array(), array( "Scrollable" => 'static' ));
-                        if(sqlsrv_num_rows($q) > 0){
-                            while($q_run = sqlsrv_fetch_array($q)){
+                        $q = mysqli_query($con, "select * from customers where customer_name='$tmp'");
+                        if(mysqli_num_rows($q) > 0){
+                            while($q_run = mysqli_fetch_array($q)){
                                 $customer = new Customer((int)$q_run['customer_id']);
                                 ?>
                                 <tr align="center">
@@ -131,22 +131,16 @@
                         }
                     }
                     elseif(isset($_GET['by_email']) && !empty($_GET['by_email'])){
-                        $tmp = $_GET['by_email'];
-                        global $con;
-                        $q = sqlsrv_query($con, "select * from customers where customer_email='$tmp'", array(), array( "Scrollable" => 'static' ));
-                        if(sqlsrv_num_rows($q) > 0){
-                            $customer = new Customer($_GET['by_email']);?>
-                            <tr align="center">
-                                <td><?php echo $customer->get_id()?></td>
-                                <td><?php echo $customer->get_name()?></td>
-                                <td><?php echo $customer->get_email()?></td>
-                                <td><?php echo $customer->get_status()?></td>
-                                <td><a href="index.php?edit_customer=<?php echo $customer->get_id()?>">Edit</a></td>
-                                <td><a href="delete_customer.php?delete_customer=<?php echo $customer->get_id()?>">Delete</a></td>
-                            </tr>
-                            <?php   }
-                        
-                     }?>
+                        $customer = new Customer($_GET['by_email']);?>
+                        <tr align="center">
+                            <td><?php echo $customer->get_id()?></td>
+                            <td><?php echo $customer->get_name()?></td>
+                            <td><?php echo $customer->get_email()?></td>
+                            <td><?php echo $customer->get_status()?></td>
+                            <td><a href="index.php?edit_customer=<?php echo $customer->get_id()?>">Edit</a></td>
+                            <td><a href="delete_customer.php?delete_customer=<?php echo $customer->get_id()?>">Delete</a></td>
+                        </tr>
+                    <?php }?>
                     </table><?php
                 }
             ?>

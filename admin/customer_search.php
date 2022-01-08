@@ -24,10 +24,6 @@
             <a href="index.php?view_brands">View All Brands</a>
             <a href="index.php?view_customers">View Customers</a>
             <a href="customer_search.php">Search Customers</a>
-            <a href="index.php?insert_supplier">Insert a supplier</a>
-            <a href="index.php?view_suppliers">View suppliers</a>
-            <a href="index.php?view_supplier_orders">View supplier orders</a>
-            <a href="index.php?make_supplier_orders">Make a Supplier order</a>
             <a href="logout.php">Log Out</a>
         </div>
         <div id="left">
@@ -89,27 +85,6 @@
                 }
                 if(isset($_GET['edit_customer'])){
                     include("edit_customer.php");
-                }
-                if(isset($_GET['insert_supplier'])){
-                    include("insert_supplier.php");
-                }
-                if(isset($_GET['view_suppliers'])){
-                    include("view_suppliers.php");
-                }
-                if(isset($_GET['delete_supplier'])){
-                    include("delete_supplier.php");
-                }
-                if(isset($_GET['edit_supplier'])){
-                    include("edit_supplier.php");
-                }
-                if(isset($_GET['view_supplier_orders'])){
-                    include("view_supplier_orders.php");
-                }
-                if(isset($_GET['edit_supplier_orders'])){
-                    include("edit_supplier_orders.php");
-                }
-                if(isset($_GET['make_supplier_orders'])){
-                    include("make_supplier_orders.php");
                 }
             ?>
         </div>
