@@ -169,6 +169,9 @@
                                         <?php }
                                     }
                                 }
+                                else{
+                                    echo "<script>window.open('checkout.php','_self')</script>";
+                                }
                             ?>
                             <tr align="right">
                                 <td colspan="4"><b>Sub Total</b></td>
@@ -182,18 +185,23 @@
                         </table>
                     </form>
                     <?php 
-                        global $con;
-                        $ip = getIp();
-                        $customer_email = $_SESSION['customer_email'];
-                        if(isset($_POST['update_cart'])){
-                            foreach($_POST['qty'] as $pro_id => $qty){
-                                sqlsrv_query($con, "update cart SET quantity='$qty' where product_id='$pro_id' AND customer_email='$customer_email'");
+                        if (isset($_SESSION['customer_email'])){
+                            global $con;
+                            $ip = getIp();
+                            $customer_email = $_SESSION['customer_email'];
+                            if(isset($_POST['update_cart'])){
+                                foreach($_POST['qty'] as $pro_id => $qty){
+                                    sqlsrv_query($con, "update cart SET quantity='$qty' where product_id='$pro_id' AND customer_email='$customer_email'");
+                                }
+                                foreach($_POST['remove'] as $remove_id){
+                                    $delete_product = "delete from cart where product_id='$remove_id' AND customer_email='$customer_email'";
+                                    sqlsrv_query($con, $delete_product);
+                                }
+                                echo "<script>window.open('cart.php','_self')</script>";
                             }
-                            foreach($_POST['remove'] as $remove_id){
-                                $delete_product = "delete from cart where product_id='$remove_id' AND customer_email='$customer_email'";
-                                sqlsrv_query($con, $delete_product);
-                            }
-                            echo "<script>window.open('cart.php','_self')</script>";
+                        }
+                        else{
+                            echo "<script>window.open('checkout.php','_self')</script>";
                         }
                     ?>
                 </div>
